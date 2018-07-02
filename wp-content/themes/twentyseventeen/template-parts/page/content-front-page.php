@@ -9,6 +9,7 @@
  */
 
 ?>
+
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'twentyseventeen-panel ' ); ?> >
 
 	<?php if ( has_post_thumbnail() ) :

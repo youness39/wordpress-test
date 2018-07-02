@@ -456,6 +456,8 @@ function twentyseventeen_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+    wp_enqueue_style( 'bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.min.css',false,'1.0','all');
 }
 add_action( 'wp_enqueue_scripts', 'twentyseventeen_scripts' );
 
@@ -584,3 +586,10 @@ require get_parent_theme_file_path( '/inc/customizer.php' );
  * SVG icons functions and filters.
  */
 require get_parent_theme_file_path( '/inc/icon-functions.php' );
+
+//Filter to edit post extrait
+function extrait_filter($output) {
+    $output = substr($output, 0, 100) . " [...]";
+    return $output;
+}
+add_filter('the_excerpt', 'extrait_filter');

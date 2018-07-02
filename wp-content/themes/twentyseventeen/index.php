@@ -16,52 +16,41 @@
  */
 
 get_header(); ?>
-
-<div class="wrap">
-	<?php if ( is_home() && ! is_front_page() ) : ?>
-		<header class="page-header">
-			<h1 class="page-title"><?php single_post_title(); ?></h1>
-		</header>
-	<?php else : ?>
-	<header class="page-header">
-		<h2 class="page-title"><?php _e( 'Posts', 'twentyseventeen' ); ?></h2>
-	</header>
-	<?php endif; ?>
-
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-
-			<?php
-			if ( have_posts() ) :
-
-				/* Start the Loop */
-				while ( have_posts() ) : the_post();
-
-					/*
-					 * Include the Post-Format-specific template for the content.
-					 * If you want to override this in a child theme, then include a file
-					 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-					 */
-					get_template_part( 'template-parts/post/content', get_post_format() );
-
-				endwhile;
-
-				the_posts_pagination( array(
-					'prev_text' => twentyseventeen_get_svg( array( 'icon' => 'arrow-left' ) ) . '<span class="screen-reader-text">' . __( 'Previous page', 'twentyseventeen' ) . '</span>',
-					'next_text' => '<span class="screen-reader-text">' . __( 'Next page', 'twentyseventeen' ) . '</span>' . twentyseventeen_get_svg( array( 'icon' => 'arrow-right' ) ),
-					'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyseventeen' ) . ' </span>',
-				) );
-
-			else :
-
-				get_template_part( 'template-parts/post/content', 'none' );
-
-			endif;
-			?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-	<?php get_sidebar(); ?>
-</div><!-- .wrap -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <?php
+                $first_cat_id = get_cat_ID("Marques auto");
+                $categories_id = get_term_children($first_cat_id, "category");
+                foreach ($categories_id as $category_id) {
+                    $children = get_term_children($category_id, "category");
+                    if (count($children)) {
+                        $category = get_category($category_id);
+                        ?>
+                        <h2><?= $category->name; ?></h2><hr/>
+                        <div class="row">
+                            <?php
+                            query_posts(["cat" => $category->term_id, "posts_per_page" => 4, "orderby" => "ID", "order" => "DESC"]);
+                            if (have_posts()) : while (have_posts()) : the_post();
+                                ?>
+                                <div class="col-sm-6">
+                                    <h3><?php the_title(); ?></h3>
+                                    <small><?= get_the_date( 'd-m-Y' ) ;?></small>
+                                    <p class="text-justify"><?php the_excerpt(); ?></p>
+                                    <a href="<?php the_permalink(); ?>" class="btn btn-primary">Lire plus</a>
+                                </div>
+                            <?php
+                            endwhile;
+                            endif;
+                            ?>
+                        </div>
+                        <?php
+                    }
+                }
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-4"></div>
+        </div>
+    </div>
 
 <?php get_footer();
