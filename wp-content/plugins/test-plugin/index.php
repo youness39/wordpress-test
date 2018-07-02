@@ -55,3 +55,35 @@ function last_brand($atts) {
     }
     return $html;
 }
+
+/*
+ * Register menu
+ */
+add_action('init', 'register_main_menu');
+function register_main_menu() {
+    register_nav_menu('main-menu', __('Main Menu'));
+}
+
+/*
+ * Add menu items
+ */
+add_filter('wp_nav_menu_items', 'add_items_to_main_menu', 20, 2);
+function add_items_to_main_menu($items, $menu)
+{
+    //Check the menu
+    if($menu->theme_location == "main-menu") {
+        //Get the first category ID
+        $first_cat_id = get_category("Marques auto");
+        //Get all first level children
+        $args = ["orderby" => "term_id", "order" => "DESC", "parent" => 2, "child_of" => $first_cat_id];
+        $categories = get_categories($args);
+        $number_of_categories = 6;
+        //Get the last 6 categories
+        $categories = array_slice($categories, 0, $number_of_categories, true);
+        //Add items to menu
+        foreach($categories as $category) {
+            $items .= "<li><a href='". get_category_link($category->term_id) ."'>". $category->name."</a></li>";
+        }
+    }
+    return $items;
+}

@@ -36,6 +36,8 @@
 					<?php get_template_part( 'template-parts/navigation/navigation', 'top' ); ?>
 				</div><!-- .wrap -->
 			</div><!-- .navigation-top -->
+        <?php elseif (has_nav_menu('main-menu')) :?>
+            <?php wp_nav_menu(array('theme_location' => 'main-menu')); ?>
 		<?php endif; ?>
 
 	</header><!-- #masthead -->
