@@ -30,7 +30,7 @@ get_header(); ?>
                         <h2><?= $category->name; ?></h2><hr/>
                         <div class="row">
                             <?php
-                            query_posts(["cat" => $category->term_id, "posts_per_page" => 4, "orderby" => "ID", "order" => "DESC"]);
+                            query_posts(["cat" => $category->term_id, "posts_per_page" => 4, "orderby" => "date", "order" => "DESC"]);
                             if (have_posts()) : while (have_posts()) : the_post();
                                 ?>
                                 <div class="col-sm-6">
@@ -49,7 +49,7 @@ get_header(); ?>
                 }
                 ?>
             </div>
-            <div class="col-xs-12 col-sm-4"></div>
+            <div class="col-xs-12 col-sm-4"><?php get_sidebar() ;?></div>
         </div>
     </div>
 
